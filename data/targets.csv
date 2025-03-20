@@ -1,0 +1,4 @@
+group,target_stock,target_fill_rate
+A, 10,0.8
+B, 100,0.9
+C, 10,0.7

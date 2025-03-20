@@ -1,7 +1,9 @@
-name: template
+name: dash_simple
 dependencies:
   - python>=3
   - pandas
   - numpy
   - pytest
   - pytest-cov
+  - dash
+  - plotly
