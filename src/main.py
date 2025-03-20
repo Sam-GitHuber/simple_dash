@@ -1,44 +1,51 @@
+"""
+Simple dash app example
+"""
+#Standard imports
+
+#3rd party imports
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
 import plotly.express as px
 import pandas as pd
 
-# Sample data
-df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Grapes"],
-    "Amount": [10, 20, 15, 5],
-    "City": ["NYC", "SF", "LA", "Chicago"]
-})
+#Local imports
+from functions import read_csv, select_stock
+
+# Load data
+stock_df = read_csv("stock.csv")
+demands_df = read_csv("demands.csv")
+targets_df = read_csv("targets.csv")
 
 # Create Dash app
 app = dash.Dash(__name__)
 
 app.layout = html.Div([
-    html.H1("Simple Dash App Example"),
-    html.Label("Choose a graph type:"),
+    html.H1("Stock and fill rate calculator"),
+    html.Label("Choose your grouping"),
     dcc.RadioItems(
-        id='graph-type',
+        id='stock-group',
         options=[
-            {"label": "Bar Chart", "value": "bar"},
-            {"label": "Line Chart", "value": "line"}
+            {"label": "A", "value": "A"},
+            {"label": "B", "value": "B"},
+            {"label": "C", "value": "C"}
         ],
-        value="bar",
+        value="A",
         inline=True
     ),
-    dcc.Graph(id="example-graph")
+    dcc.Graph(id="stock-graph")
 ])
 
 # Callback for interactive updates
 @app.callback(
-    Output("example-graph", "figure"),
-    [Input("graph-type", "value")]
+    Output("stock-graph", "figure"),
+    [Input("stock-group", "value")]
 )
-def update_graph(graph_type):
-    if graph_type == "bar":
-        return px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
-    elif graph_type == "line":
-        return px.line(df, x="Fruit", y="Amount", color="City")
+def update_graph(stock_group):
+    display_df = select_stock(data=stock_df, stock_group=stock_group)
+    return px.line(stock_df[stock_df['group'] == stock_group], x="date", y="quantity")
 
 if __name__ == '__main__':
     app.run_server(debug=True)
+ 

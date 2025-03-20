@@ -6,7 +6,6 @@ import pytest
 
 # 3rd party imports
 import pandas as pd
-from pandas.testing import assert_frame_equal
 
 # Local imports
 from src.functions import read_csv
@@ -17,7 +16,6 @@ def test_read_csv_simple():
     """
     result = read_csv('targets.csv')
 
-    
     expected = pd.DataFrame({
         "group": ["A", "B", "C"],
         "target_stock": [10, 100, 10],
