@@ -23,7 +23,10 @@ def test_read_csv_simple():
         "target_stock": [10, 100, 10],
         "target_fill_rate": [0.8, 0.9, 0.7]
     })
-    assert assert_frame_equal(result, expected)
+    assert (result.columns == expected.columns).all()
+    assert result['group'].equals(expected['group'])
+    assert result['target_stock'].equals(expected['target_stock'])
+    assert result['target_fill_rate'].equals(expected['target_fill_rate'])
 
 if __name__ == '__main__':
     pytest.main()
