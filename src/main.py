@@ -11,7 +11,7 @@ import plotly.express as px
 import pandas as pd
 
 #Local imports
-from functions import read_csv, select_stock
+from src.functions import read_csv, select_stock
 
 # Load data
 stock_df = read_csv("stock.csv")
@@ -44,8 +44,7 @@ app.layout = html.Div([
 )
 def update_graph(stock_group):
     display_df = select_stock(data=stock_df, stock_group=stock_group)
-    return px.line(stock_df[stock_df['group'] == stock_group], x="date", y="quantity")
+    return px.line(display_df, x="date", y="quantity")
 
 if __name__ == '__main__':
     app.run_server(debug=True)
- 
