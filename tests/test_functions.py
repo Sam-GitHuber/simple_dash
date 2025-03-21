@@ -8,7 +8,7 @@ import pytest
 import pandas as pd
 
 # Local imports
-from src.functions import read_csv
+from src.functions import read_csv, select_stock
 
 def test_read_csv_simple():
     """
@@ -26,7 +26,32 @@ def test_read_csv_simple():
     assert result['target_stock'].equals(expected['target_stock'])
     assert result['target_fill_rate'].equals(expected['target_fill_rate'])
 
+def test_select_stock_simple():
+    """
+    Simple test for selecting stock
+    """
+    data = pd.DataFrame({
+        "group": ["A", "A", "B", "B"],
+        "date": ["2021-01-01", "2021-01-02", "2021-01-01", "2021-01-02"],
+        "quantity": [10, 20, 30, 40]
+    })
+
+    result = select_stock(data, "A")
+
+    expected = pd.DataFrame({
+        "group": ["A", "A"],
+        "date": ["2021-01-01", "2021-01-02"],
+        "quantity": [10, 20]
+    })
+    assert (result.columns == expected.columns).all()
+    assert result['group'].equals(expected['group'])
+    assert result['date'].equals(expected['date'])
+    assert result['quantity'].equals(expected['quantity'])
+
 def test_failing():
+    """
+    Failing test
+    """
     assert True
 
 
